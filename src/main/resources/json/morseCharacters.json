@@ -1,0 +1,150 @@
+[
+  {
+    "character": "A",
+    "morseSymbol": ".-"
+  },
+  {
+    "character": "B",
+    "morseSymbol": "-..."
+  },
+  {
+    "character": "C",
+    "morseSymbol": "-.-."
+  },
+  {
+    "character": "D",
+    "morseSymbol": "-.."
+  },
+  {
+    "character": "E",
+    "morseSymbol": "."
+  },
+  {
+    "character": "F",
+    "morseSymbol": "..-."
+  },
+  {
+    "character": "G",
+    "morseSymbol": "--."
+  },
+  {
+    "character": "H",
+    "morseSymbol": "...."
+  },
+  {
+    "character": "I",
+    "morseSymbol": ".."
+  },
+  {
+    "character": "J",
+    "morseSymbol": ".---"
+  },
+  {
+    "character": "K",
+    "morseSymbol": "-.-"
+  },
+  {
+    "character": "L",
+    "morseSymbol": ".-.."
+  },
+  {
+    "character": "M",
+    "morseSymbol": "--"
+  },
+  {
+    "character": "N",
+    "morseSymbol": "-."
+  },
+  {
+    "character": "O",
+    "morseSymbol": "---"
+  },
+  {
+    "character": "P",
+    "morseSymbol": ".--."
+  },
+  {
+    "character": "Q",
+    "morseSymbol": "--.-"
+  },
+  {
+    "character": "R",
+    "morseSymbol": ".-."
+  },
+  {
+    "character": "S",
+    "morseSymbol": "..."
+  },
+  {
+    "character": "T",
+    "morseSymbol": "-"
+  },
+  {
+    "character": "U",
+    "morseSymbol": "..-"
+  },
+  {
+    "character": "V",
+    "morseSymbol": "...-"
+  },
+  {
+    "character": "W",
+    "morseSymbol": ".--"
+  },
+  {
+    "character": "X",
+    "morseSymbol": "-..-"
+  },
+  {
+    "character": "Y",
+    "morseSymbol": "-.--"
+  },
+  {
+    "character": "Z",
+    "morseSymbol": "--.."
+  },
+  {
+    "character": "0",
+    "morseSymbol": "-----"
+  },
+  {
+    "character": "1",
+    "morseSymbol": ".----"
+  },
+  {
+    "character": "2",
+    "morseSymbol": "..---"
+  },
+  {
+    "character": "3",
+    "morseSymbol": "...--"
+  },
+  {
+    "character": "4",
+    "morseSymbol": "....-"
+  },
+  {
+    "character": "5",
+    "morseSymbol": "....."
+  },
+  {
+    "character": "6",
+    "morseSymbol": "-...."
+  },
+  {
+    "character": "7",
+    "morseSymbol": "--..."
+  },
+  {
+    "character": "8",
+    "morseSymbol": "---.."
+  },
+  {
+    "character": "9",
+    "morseSymbol": "----."
+  },
+  {
+    "character": ".",
+    "morseSymbol": ".-.-.-"
+  }
+]

@@ -8,10 +8,10 @@
 		<version>2.7.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>meli</artifactId>
+	<groupId>com.messages.mngr</groupId>
+	<artifactId>messages-mngr</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>meli</name>
+	<name>messages-mngr</name>
 	<description>Demo project to translate messages between, binary - morse - human language!</description>
 	<properties>
 		<java.version>11</java.version>

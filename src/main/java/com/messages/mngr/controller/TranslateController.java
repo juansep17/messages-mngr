@@ -1,12 +1,11 @@
 package com.messages.mngr.controller;
 
+import com.messages.mngr.exceptions.TranslateException;
 import com.messages.mngr.services.interfaces.ITranslateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*") // NOSONAR
@@ -26,7 +25,16 @@ public class TranslateController {
     }
 
     @GetMapping("/2text")
-    public String translate2Human() {
-        return "";
+    public ResponseEntity<String> translate2Human(@RequestBody String morseCode) {
+        try {
+            String decodedMessage = translateService.translate2Human(morseCode);
+            return ResponseEntity.ok(decodedMessage);
+        } catch (TranslateException e) {
+            if (e.getHttpStatus().equals(HttpStatus.BAD_REQUEST)) {
+                //return ResponseEntity.badRequest();
+            }
+            //return ResponseEntity.internalServerError();
+            return null;
+        }
     }
 }
