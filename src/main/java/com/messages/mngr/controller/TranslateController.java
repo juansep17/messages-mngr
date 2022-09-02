@@ -1,5 +1,6 @@
 package com.messages.mngr.controller;
 
+import com.messages.mngr.dto.ResponseDto;
 import com.messages.mngr.exceptions.TranslateException;
 import com.messages.mngr.services.interfaces.ITranslateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,22 @@ public class TranslateController {
     }
 
     @GetMapping("/2text")
-    public ResponseEntity<String> translate2Human(@RequestBody String morseCode) {
+    public ResponseEntity<ResponseDto> translate2Human(@RequestBody String morseCode) {
         try {
             String decodedMessage = translateService.translate2Human(morseCode);
-            return ResponseEntity.ok(decodedMessage);
+            return ResponseEntity.ok(buildResponseDto(decodedMessage, HttpStatus.OK));
         } catch (TranslateException e) {
             if (e.getHttpStatus().equals(HttpStatus.BAD_REQUEST)) {
-                //return ResponseEntity.badRequest();
+                return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.BAD_REQUEST);
             }
-            //return ResponseEntity.internalServerError();
-            return null;
+            return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private ResponseDto buildResponseDto(String message, HttpStatus status) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setMessage(message);
+        responseDto.setHttpStatus(status.value());
+        return responseDto;
     }
 }

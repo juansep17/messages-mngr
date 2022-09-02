@@ -1,8 +1,7 @@
 package com.messages.mngr.services.implementation;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.messages.mngr.dto.CharactersDto;
 import com.messages.mngr.exceptions.TranslateException;
 import com.messages.mngr.services.interfaces.ITranslateService;
 import org.slf4j.Logger;
@@ -12,27 +11,28 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import static com.messages.mngr.utils.ConstantsUtil.BLANK_CHAR;
+import static com.messages.mngr.utils.ConstantsUtil.DOUBLE_BLANK_CHAR;
 
 @Service
 public class TranslateServiceImpl implements ITranslateService {
-
-    private static final String BLANK_CHAR = " ";
-    private static final String DOUBLE_BLANK_CHAR = "  ";
-    private static final String SYMBOL_DELIMITER = "%";
-    private static final String SPACE = "+%";
-    private static final String SPACE_IDENTIFIER = "+";
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslateServiceImpl.class);
     private static final String PATH = "/json/morseCharacters.json";
 
-    private static List<CharactersDto> charactersList;
+    private static HashMap<String, String> charactersList;
 
     static {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, CharactersDto.class);
             InputStream morseCharacters = TranslateServiceImpl.class.getResourceAsStream(PATH);
-            charactersList = mapper.readValue(morseCharacters, collectionType);
+            charactersList = mapper.readValue(morseCharacters, new TypeReference<>() {
+            });
+            LOGGER.info("Morse characters: {}", charactersList);
         } catch (IOException e) {
             LOGGER.error("Error trying to get morse characters");
         }
@@ -45,24 +45,16 @@ public class TranslateServiceImpl implements ITranslateService {
 
     @Override
     public String translate2Human(String messageMorse) throws TranslateException {
-        String messageWithSpacesBetweenWords = messageMorse.replace(DOUBLE_BLANK_CHAR, SPACE);
-        String[] morseSymbolsArray = messageWithSpacesBetweenWords.replace(BLANK_CHAR, SYMBOL_DELIMITER).split(SYMBOL_DELIMITER);
-        List<String> decodedCharacters = getMessageInList(morseSymbolsArray);
-        if (decodedCharacters.isEmpty()) {
-            throw new TranslateException(HttpStatus.BAD_REQUEST, "No valid morse symbols were found");
+        String[] morseWordsArray = messageMorse.split(DOUBLE_BLANK_CHAR);
+        List<String> finalMessage = new ArrayList<>();
+        Arrays.stream(morseWordsArray).forEach(word -> {
+            String[] morseLettersArray = word.split(BLANK_CHAR);
+            Arrays.stream(morseLettersArray).forEach(letter -> finalMessage.add(charactersList.get(letter)));
+            finalMessage.add(BLANK_CHAR);
+        });
+        if (finalMessage.isEmpty() || finalMessage.contains(null)) {
+            throw new TranslateException(HttpStatus.BAD_REQUEST, "There's an error in the message. No valid morse symbols were found");
         }
-        return String.join("", decodedCharacters);
-    }
-
-    private List<String> getMessageInList(String[] encodedMessageArray) {
-        List<String> decodedMessage = new ArrayList<>();
-        Arrays.stream(encodedMessageArray).forEach(encodedSymbol -> charactersList.forEach(character -> {
-            boolean hasSpace = encodedSymbol.contains(SPACE_IDENTIFIER);
-            String encodedSymbolVerified = hasSpace ? encodedSymbol.substring(0, encodedSymbol.length() - 1) : encodedSymbol;
-            if (character.getMorseSymbol().equals(encodedSymbolVerified)) {
-                decodedMessage.add(hasSpace ? character.getCharacter().concat(BLANK_CHAR) : character.getCharacter());
-            }
-        }));
-        return decodedMessage;
+        return String.join("", finalMessage);
     }
 }
