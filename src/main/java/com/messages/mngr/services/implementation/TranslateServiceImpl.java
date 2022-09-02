@@ -55,6 +55,6 @@ public class TranslateServiceImpl implements ITranslateService {
         if (finalMessage.isEmpty() || finalMessage.contains(null)) {
             throw new TranslateException(HttpStatus.BAD_REQUEST, "There's an error in the message. No valid morse symbols were found");
         }
-        return String.join("", finalMessage);
+        return String.join("", finalMessage).trim();
     }
 }
