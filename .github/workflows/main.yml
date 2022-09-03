@@ -28,7 +28,7 @@ jobs:
       - name: Build
         run: |
           echo "BUILD START"
-          mvn clean install
+          mvn clean --file *.pom
 
   test:
     runs-on: ubuntu-latest
