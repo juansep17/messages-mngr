@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        run: |
+        echo "BUILD START"
+        mvn clean install
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: |
+        echo "TEST START"
+        mvn verify
