@@ -28,7 +28,7 @@ jobs:
       - name: Build
         run: |
           echo "BUILD START"
-          mvn clean --file .pom
+          mvn clean install -Dmaven.skip.test=true 
 
   test:
     runs-on: ubuntu-latest
