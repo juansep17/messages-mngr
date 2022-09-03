@@ -21,8 +21,16 @@ public class TranslateController {
     }
 
     @GetMapping("/decodeBits")
-    public String decodeBits2Morse() {
-        return "";
+    public ResponseEntity<ResponseDto> decodeBits2Morse(@RequestBody String bits) {
+        try {
+            String decodedMessage = translateService.decodeBits2Morse(bits);
+            return ResponseEntity.ok(buildResponseDto(decodedMessage, HttpStatus.OK));
+        } catch (TranslateException e) {
+            if (e.getHttpStatus().equals(HttpStatus.BAD_REQUEST)) {
+                return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/2text")
