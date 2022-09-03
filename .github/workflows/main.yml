@@ -11,13 +11,13 @@ jobs:
     steps:
       - name: Build
         run: |
-        echo "BUILD START"
-        mvn clean install
+          echo "BUILD START"
+          mvn clean install
 
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Test
         run: |
-        echo "TEST START"
-        mvn verify
+          echo "TEST START"
+          mvn verify
