@@ -1,12 +1,11 @@
 package co.com.mngr;
 
 import com.messages.mngr.MessagesManagerApplication;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = MessagesManagerApplication.class)
 class MessagesManagerApplicationTests {
 
 	@Test
