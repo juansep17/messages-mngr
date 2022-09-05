@@ -1,5 +1,6 @@
 package com.messages.mngr.controller;
 
+import com.messages.mngr.dto.RequestDto;
 import com.messages.mngr.dto.ResponseDto;
 import com.messages.mngr.exceptions.TranslateException;
 import com.messages.mngr.services.interfaces.ITranslateService;
@@ -24,11 +25,11 @@ public class TranslateController {
         this.translateService = translateService;
     }
 
-    @PostMapping("/decodeBits")
-    public ResponseEntity<ResponseDto> decodeBits2Morse(@RequestBody String bits) {
+    @PostMapping(value = "/decodeBits")
+    public ResponseEntity<ResponseDto> decodeBits2Morse(@RequestBody RequestDto bits) {
         try {
-            LOGGER.info("START DECODE BITS -> {}", bits);
-            String decodedMessage = translateService.decodeBits2Morse(bits);
+            LOGGER.info("START DECODE BITS -> {}", bits.getText());
+            String decodedMessage = translateService.decodeBits2Morse(bits.getText());
             LOGGER.info("FINISH DECODE BITS -> {}", decodedMessage);
             return ResponseEntity.ok(buildResponseDto(decodedMessage, HttpStatus.OK));
         } catch (TranslateException e) {
@@ -41,11 +42,11 @@ public class TranslateController {
         }
     }
 
-    @PostMapping("/2text")
-    public ResponseEntity<ResponseDto> translate2Human(@RequestBody String morseCode) {
+    @PostMapping(value = "/2text")
+    public ResponseEntity<ResponseDto> translate2Human(@RequestBody RequestDto morseCode) {
         try {
-            LOGGER.info("START TRANSLATE TO HUMAN -> {}", morseCode);
-            String decodedMessage = translateService.translate2Human(morseCode);
+            LOGGER.info("START TRANSLATE TO HUMAN -> {}", morseCode.getText());
+            String decodedMessage = translateService.translate2Human(morseCode.getText());
             LOGGER.info("FINISH TRANSLATE TO HUMAN -> {}", decodedMessage);
             return ResponseEntity.ok(buildResponseDto(decodedMessage, HttpStatus.OK));
         } catch (TranslateException e) {
