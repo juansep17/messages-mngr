@@ -10,8 +10,9 @@
 	</parent>
 	<groupId>com.messages.mngr</groupId>
 	<artifactId>messages-mngr</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>messages-mngr</name>
+	<packaging>jar</packaging>
 	<description>Demo project to translate messages between, binary - morse - human language!</description>
 	<properties>
 		<java.version>11</java.version>

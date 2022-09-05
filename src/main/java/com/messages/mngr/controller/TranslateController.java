@@ -3,6 +3,8 @@ package com.messages.mngr.controller;
 import com.messages.mngr.dto.ResponseDto;
 import com.messages.mngr.exceptions.TranslateException;
 import com.messages.mngr.services.interfaces.ITranslateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("translate")
 public class TranslateController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TranslateController.class);
+
     private ITranslateService translateService;
 
     @Autowired
@@ -20,29 +24,37 @@ public class TranslateController {
         this.translateService = translateService;
     }
 
-    @GetMapping("/decodeBits")
+    @PostMapping("/decodeBits")
     public ResponseEntity<ResponseDto> decodeBits2Morse(@RequestBody String bits) {
         try {
+            LOGGER.info("START DECODE BITS -> {}", bits);
             String decodedMessage = translateService.decodeBits2Morse(bits);
+            LOGGER.info("FINISH DECODE BITS -> {}", decodedMessage);
             return ResponseEntity.ok(buildResponseDto(decodedMessage, HttpStatus.OK));
         } catch (TranslateException e) {
             if (e.getHttpStatus().equals(HttpStatus.BAD_REQUEST)) {
                 return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(buildResponseDto(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/2text")
+    @PostMapping("/2text")
     public ResponseEntity<ResponseDto> translate2Human(@RequestBody String morseCode) {
         try {
+            LOGGER.info("START TRANSLATE TO HUMAN -> {}", morseCode);
             String decodedMessage = translateService.translate2Human(morseCode);
+            LOGGER.info("FINISH TRANSLATE TO HUMAN -> {}", decodedMessage);
             return ResponseEntity.ok(buildResponseDto(decodedMessage, HttpStatus.OK));
         } catch (TranslateException e) {
             if (e.getHttpStatus().equals(HttpStatus.BAD_REQUEST)) {
                 return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(buildResponseDto(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
