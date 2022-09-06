@@ -45,24 +45,30 @@ class TranslateControllerTest {
     }
 
     @Test
-    void decodeBits2MorseInternalServerErrorTest() throws TranslateException {
-        Mockito.when(translateService.decodeBits2Morse(Mockito.anyString())).thenThrow(new TranslateException(HttpStatus.INTERNAL_SERVER_ERROR, "Error"));
-        ResponseEntity<ResponseDto> response = translateController.decodeBits2Morse(buildRequestDto("000000001101/101100"));
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-
-
-    @Test
-    void translate2HumaneMorseTest() throws TranslateException {
+    void translate2HumanTest() throws TranslateException {
         Mockito.when(translateService.translate2Human(Mockito.anyString())).thenReturn("HOLA MELI");
         ResponseEntity<ResponseDto> response = translateController.translate2Human(buildRequestDto(".... --- .-.. .- -- . .-.. .."));
         Assertions.assertEquals("HOLA MELI", Objects.requireNonNull(response.getBody()).getMessage());
     }
 
     @Test
-    void translate2HumaneBadRequestTest() throws TranslateException {
+    void translate2HumanBadRequestTest() throws TranslateException {
         Mockito.when(translateService.translate2Human(Mockito.anyString())).thenThrow(new TranslateException(HttpStatus.BAD_REQUEST, "Error"));
         ResponseEntity<ResponseDto> response = translateController.translate2Human(buildRequestDto(".... -$-- .-.. .- -- . .-.. .."));
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void translate2MorseTest() throws TranslateException {
+        Mockito.when(translateService.translate2Morse(Mockito.anyString())).thenReturn(".... --- .-.. .- -- . .-.. ..");
+        ResponseEntity<ResponseDto> response = translateController.translate2Morse(buildRequestDto("HOLA MELI"));
+        Assertions.assertEquals(".... --- .-.. .- -- . .-.. ..", Objects.requireNonNull(response.getBody()).getMessage());
+    }
+
+    @Test
+    void translate2MorseBadRequestTest() throws TranslateException {
+        Mockito.when(translateService.translate2Morse(Mockito.anyString())).thenThrow(new TranslateException(HttpStatus.BAD_REQUEST, "Error"));
+        ResponseEntity<ResponseDto> response = translateController.translate2Morse(buildRequestDto(""));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 

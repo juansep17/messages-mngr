@@ -59,6 +59,23 @@ public class TranslateController {
         }
     }
 
+    @PostMapping(value = "/2morse")
+    public ResponseEntity<ResponseDto> translate2Morse(@RequestBody RequestDto messageHuman) {
+        try {
+            LOGGER.info("START TRANSLATE TO MORSE -> {}", messageHuman.getText());
+            String decodedMessage = translateService.translate2Morse(messageHuman.getText());
+            LOGGER.info("FINISH TRANSLATE TO MORSE -> {}", decodedMessage);
+            return ResponseEntity.ok(buildResponseDto(decodedMessage, HttpStatus.OK));
+        } catch (TranslateException e) {
+            if (e.getHttpStatus().equals(HttpStatus.BAD_REQUEST)) {
+                return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(buildResponseDto(e.getMessage(), e.getHttpStatus()), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(buildResponseDto("Unexpected error", HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     private ResponseDto buildResponseDto(String message, HttpStatus status) {
         ResponseDto responseDto = new ResponseDto();
         responseDto.setMessage(message);

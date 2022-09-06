@@ -38,6 +38,21 @@ class TranslateServiceImplTest {
     }
 
     @Test
+    void translate2MorseTest() throws TranslateException {
+        String message = translateService.translate2Morse("hola meli");
+        Assertions.assertEquals(".... --- .-.. .-  -- . .-.. ..", message);
+    }
+
+    @Test
+    void translate2MorseBadRequestTest() {
+        try {
+            translateService.translate2Morse("hola me//li");
+        } catch (TranslateException e) {
+            Assertions.assertEquals(HttpStatus.BAD_REQUEST, e.getHttpStatus());
+        }
+    }
+
+    @Test
     void decodeBits2MorseTest() throws TranslateException {
         String message = translateService.decodeBits2Morse(BINARY);
         String humanLanguageMessage = translateService.translate2Human(message);
