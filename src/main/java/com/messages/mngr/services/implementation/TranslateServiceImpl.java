@@ -62,7 +62,7 @@ public class TranslateServiceImpl implements ITranslateService {
                     .map(word -> getWord(word, dictionary, splitter).concat(BLANK_CHAR))
                     .collect(Collectors.joining(EMPTY_STRING)).trim();
         } catch (Exception e) {
-            throw new TranslateException(HttpStatus.BAD_REQUEST, String.format("There's an error in the message. No valid %s symbols were found", splitter.equals(EMPTY_STRING) ? "morse" : "human"));
+            throw new TranslateException(HttpStatus.BAD_REQUEST, String.format("There's an error in the message. No valid %s symbols were found", splitter.equals(EMPTY_STRING) ? "human" : "morse"));
         }
     }
 
